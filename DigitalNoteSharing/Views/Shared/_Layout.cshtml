@@ -1,0 +1,132 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DigitalNoteSharing.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - DigitalNoteSharing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">NoteShare</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="nav" class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" asp-controller="Notes" asp-action="Index">Explore</a></li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Notes" asp-action="Mine">My Notes</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Conversion" asp-action="Index">Convert</a></li>
+                    }
+                </ul>
+                <ul class="navbar-nav">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <span class="navbar-text me-2">Hi, @UserManager.GetUserAsync(User).Result?.FullName</span>
+                        </li>
+                        <li class="nav-item">
+                            <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post">
+                                <button class="btn btn-outline-dark btn-sm">Logout</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="btn btn-dark btn-sm me-2" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
+                        <li class="nav-item"><a class="btn btn-outline-dark btn-sm" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Sign Up</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content p-3">
+                <div class="modal-header"><h5 class="modal-title">Login</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form method="post" asp-area="Identity" asp-page="/Account/Login">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input name="Input.Email" type="email" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input name="Input.Password" type="password" class="form-control" required />
+                        </div>
+                        <button class="btn btn-dark w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content p-3">
+                <div class="modal-header"><h5 class="modal-title">Sign Up</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form method="post" asp-area="Identity" asp-page="/Account/Register">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Full name</label>
+                                <input name="Input.FullName" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">College</label>
+                                <input name="Input.CollegeName" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input name="Input.Email" type="email" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Degree</label>
+                                <input name="Input.Degree" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Password</label>
+                                <input name="Input.Password" type="password" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Confirm password</label>
+                                <input name="Input.ConfirmPassword" type="password" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Major / Department</label>
+                                <input name="Input.Major" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Year / Semester</label>
+                                <input name="Input.YearOrSemester" class="form-control" />
+                            </div>
+                        </div>
+                        <button class="btn btn-dark w-100 mt-3">Create account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+<h2 class="mb-3">Welcome</h2>
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="h5">My uploads</div>
+                <div class="display-6">@ViewBag.TotalMine</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="h5">All notes</div>
+                <div class="display-6">@ViewBag.TotalAll</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="h5">Quick links</div>
+                <a class="btn btn-dark btn-sm" asp-controller="Notes" asp-action="Create">Upload</a>
+                <a class="btn btn-outline-dark btn-sm" asp-controller="Notes" asp-action="Mine">My Notes</a>
+                <a class="btn btn-outline-dark btn-sm" asp-controller="Notes" asp-action="Index">Explore</a>
+            </div>
+        </div>
+    </div>
+</div>

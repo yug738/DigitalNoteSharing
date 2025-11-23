@@ -1,0 +1,46 @@
+﻿@model IEnumerable<DigitalNoteSharing.Models.Note>
+@{
+    ViewData["Title"] = "Notes Library";
+}
+<h2 class="mb-3">Explore Notes</h2>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3"><input name="q" class="form-control" placeholder="Search title/description" value="@Context.Request.Query["q"]" /></div>
+    <div class="col-md-2"><input name="degree" class="form-control" placeholder="Degree" value="@Context.Request.Query["degree"]" /></div>
+    <div class="col-md-2"><input name="major" class="form-control" placeholder="Major" value="@Context.Request.Query["major"]" /></div>
+    <div class="col-md-2"><input name="year" class="form-control" placeholder="Year/Sem" value="@Context.Request.Query["year"]" /></div>
+    <div class="col-md-2"><input name="type" class="form-control" placeholder="Type (pdf, docx...)" value="@Context.Request.Query["type"]" /></div>
+    <div class="col-md-1"><button class="btn btn-dark w-100">Filter</button></div>
+</form>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Uploader</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var n in Model)
+        {
+            <tr>
+                <td>
+                    <div class="fw-semibold">@n.Title</div>
+                    <div class="text-muted small">@n.Description</div>
+                </td>
+                <td>@n.FileType.ToUpper()</td>
+                <td>
+                    @n.UploadedBy?.FullName
+                    <div class="text-muted small">@n.UploadedBy?.Degree - @n.UploadedBy?.Major (@n.UploadedBy?.YearOrSemester)</div>
+                </td>
+                <td>@n.UploadedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-primary" asp-action="Download" asp-route-id="@n.Id">Download</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

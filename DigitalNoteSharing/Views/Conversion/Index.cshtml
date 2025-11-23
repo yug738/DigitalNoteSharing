@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "File Conversion";
+}
+<h2>Convert Files</h2>
+@if (TempData["err"] != null)
+{
+    <div class="alert alert-danger">@TempData["err"]</div>
+}
+
+<form asp-action="Convert" method="post" enctype="multipart/form-data" class="mt-3">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <select name="direction" class="form-select">
+                <option value="csv-to-xlsx">CSV → XLSX</option>
+                <option value="xlsx-to-csv">XLSX → CSV</option>
+            </select>
+        </div>
+        <div class="col-md-5">
+            <input type="file" name="file" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-dark w-100">Convert & Download</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<DigitalNoteSharing.Models.Note>
+@{
+    ViewData["Title"] = "My Notes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">My Notes</h2>
+    <a class="btn btn-dark" asp-action="Create">Upload New</a>
+</div>
+
+@if (TempData["msg"] != null)
+{
+    <div id="alertMsg" class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center mt-4">
+        You haven’t uploaded any notes yet.
+        <a asp-action="Create" class="alert-link">Upload one now</a> to share with others.
+    </div>
+}
+else
+{
+    <table class="table table-hover align-middle mt-3 shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th style="width: 200px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var n in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="fw-semibold">@n.Title</div>
+                        <div class="text-muted small">@n.Description</div>
+                    </td>
+                    <td>@n.FileType.ToUpper()</td>
+                    <td>@n.UploadedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@n.Id">Edit</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@n.Id">Delete</a>
+                        <a class="btn btn-sm btn-outline-primary" asp-action="Download" asp-route-id="@n.Id">Download</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script>
+        // auto-dismiss success alert after 4 seconds
+        setTimeout(() => {
+            const alertBox = document.getElementById('alertMsg');
+            if (alertBox) {
+                const bsAlert = new bootstrap.Alert(alertBox);
+                bsAlert.close();
+            }
+        }, 4000);
+    </script>
+}

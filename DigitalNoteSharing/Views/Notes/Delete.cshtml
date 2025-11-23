@@ -1,0 +1,11 @@
+﻿@model DigitalNoteSharing.Models.Note
+@{
+    ViewData["Title"] = "Delete Note";
+}
+<h2>Delete Note</h2>
+<div class="alert alert-warning">Are you sure you want to delete <strong>@Model.Title</strong>?</div>
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button class="btn btn-danger">Delete</button>
+    <a asp-action="Mine" class="btn btn-link">Cancel</a>
+</form>
